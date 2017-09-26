@@ -37,18 +37,13 @@ def call(body) {
                 }
             }
             stage("Push Image") {
+                when {
+                    branch "release*"
+                }
                 steps {
                     aws {
                         useNexus {
-                            // we push only release branch
-                            switch (env.BRANCH_NAME) {
-                                case "master":
-                                case "develop":
-                                    break
-                                default:
-                                    sh './gradlew dockerPushImage -Pprofile=docker -x integrationTest'
-                                    break
-                            }
+                            sh './gradlew dockerPushImage -Pprofile=docker -x integrationTest'
                         }
                     }
                 }
