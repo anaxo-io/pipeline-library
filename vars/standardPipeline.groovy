@@ -4,35 +4,35 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
+    
+    pipeline {
 
-    node {
-        // Clean workspace before doing anything
-        deleteDir()
-
-        try {
+        agent { label 'ubuntu_agent' }
+        triggers {
+            pollSCM("")
+        }
+        
+        stages {
             stage ('Clone') {
                 checkout scm
-            }
-            stage ('Build') {
-                sh "echo 'building ${config.projectName} ...'"
-            }
-            stage ('Tests') {
-                parallel 'static': {
-                    sh "echo 'shell scripts to run static tests...'"
-                },
-                'unit': {
-                    sh "echo 'shell scripts to run unit tests...'"
-                },
-                'integration': {
-                    sh "echo 'shell scripts to run integration tests...'"
+            }        
+            stage("Build") {
+                steps {
+                    useNexus {
+                        sh './gradlew build -Pprofile=docker  -x test -x integrationTest'
+                    }
                 }
             }
             stage ('Deploy') {
-                sh "echo 'deploying to server ${config.serverDomain}...'"
+                sh "echo 'deploying to server ${config.projectName}...'"
             }
-        } catch (err) {
-            currentBuild.result = 'FAILED'
-            throw err
         }
+        
+        post {
+            always {
+                junit allowEmptyResults: true, testResults: '${config.projectName}/build/test-results/test/*.xml'
+            }
+        }
+
     }
 }
