@@ -20,8 +20,10 @@ def call(body) {
             }        
             stage("Build") {
                 steps {
-                    useNexus {
-                        sh './gradlew build -Pprofile=docker  -x test -x integrationTest'
+                    aws {
+                        useNexus {
+                            sh './gradlew build -Pprofile=docker  -x test -x integrationTest'
+                        }
                     }
                 }
             }
