@@ -27,12 +27,19 @@ def call(body) {
                     }
                 }
             }
-            stage ('Deploy') {
+            stage("Deploy") {
                 steps {
-                    sh "echo 'deploying to server ${config.projectName}...'"
+                    sh 'ansible-galaxy install -r devops/ansible-deploy/requirements.yml -p devops/ansible-deploy/roles/'
+                    aws {
+                        ansiblePlaybook credentialsId: 'pradeep-cloud-user', 
+                            extras: "-e app_name=margin -e app_branch=$BRANCH_NAME", 
+                            inventory: 'devops/ansible-deploy/inventory/palo-dev', 
+                            playbook: 'devops/ansible-deploy/playbook.yml', 
+                            sudoUser: null
+                    }
                 }
-            }
-        }
+            }   
+        }        
         
         post {
             always {
