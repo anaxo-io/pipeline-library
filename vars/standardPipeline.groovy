@@ -14,7 +14,9 @@ def call(body) {
         
         stages {
             stage ('Clone') {
-                checkout scm
+                steps {
+                    checkout scm
+                }
             }        
             stage("Build") {
                 steps {
@@ -24,7 +26,9 @@ def call(body) {
                 }
             }
             stage ('Deploy') {
-                sh "echo 'deploying to server ${config.projectName}...'"
+                steps {
+                    sh "echo 'deploying to server ${config.projectName}...'"
+                }
             }
         }
         
