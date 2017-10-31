@@ -22,7 +22,7 @@ def call(body) {
                 steps {
                     aws {
                         useNexus {
-                            sh './gradlew clean build -Pprofile=docker -x integrationTest'
+                            sh './gradlew snapshot -x test -x integrationTest'
                         }
                     }
                 }
