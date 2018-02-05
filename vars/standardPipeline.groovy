@@ -19,8 +19,10 @@ def call(body) {
                 }
             }        
             stage ('Info') {
-                sh "java -version"
-                sh "docker version"
+                steps {
+                    sh "java -version"
+                    sh "docker version"
+                }
             }
             stage("Compile and Test") {
                 steps {
