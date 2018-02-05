@@ -18,6 +18,10 @@ def call(body) {
                     checkout scm
                 }
             }        
+            stage ('Info') {
+                sh "java -version"
+                sh "docker version"
+            }
             stage("Compile and Test") {
                 steps {
                     aws {
