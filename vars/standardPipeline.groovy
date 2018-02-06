@@ -50,14 +50,14 @@ def call(body) {
             }
             stage("Deploy") {
                 steps {
-                    sh "export DOCKER_IMAGE=`./gradlew -q devops:printDockerImageTag`"
-
-                    sh "echo deploying '$DOCKER_IMAGE' with kubectl"
-
-                    withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
-                        sh "kubectl get nodes"
-                        sh "kubectl set image deployment/auth acuo-auth=$DOCKER_IMAGE"
-                        sh "kubectl rollout status deployment/auth"
+                    useNexus {
+                        sh "export DOCKER_IMAGE=`./gradlew -q devops:printDockerImageTag`"
+                        sh "echo deploying '$DOCKER_IMAGE' with kubectl"
+                        withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
+                            sh "kubectl get nodes"
+                            sh "kubectl set image deployment/auth acuo-auth=$DOCKER_IMAGE"
+                            sh "kubectl rollout status deployment/auth"
+                        }
                     }
                 }
             }   
