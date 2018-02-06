@@ -52,7 +52,8 @@ def call(body) {
                 steps {
                     aws {
                         useNexus {
-                            def DOCKER_IMAGE = sh(returnStdout: true, script: "export DOCKER_IMAGE=`./gradlew -q devops:printDockerImageTag`")
+
+                            DOCKER_IMAGE = sh(returnStdout: true, script: '"./gradlew -q devops:printDockerImageTag"').trim()
 
                             sh "echo deploying $DOCKER_IMAGE "
 
