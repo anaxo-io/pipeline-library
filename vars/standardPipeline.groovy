@@ -52,9 +52,9 @@ def call(body) {
                 steps {
                     aws {
                         useNexus {
-                            sh "export DOCKER_IMAGE=`./gradlew -q devops:printDockerImageTag`"
+                            def DOCKER_IMAGE = sh(returnStdout: true, script: "export DOCKER_IMAGE=`./gradlew -q devops:printDockerImageTag`")
 
-                            sh "echo deploying $DOCKER_IMAGE with kubectl"
+                            sh "echo deploying $DOCKER_IMAGE "
 
                             withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
                                 sh "kubectl get nodes"
