@@ -57,14 +57,10 @@ def call(body) {
             stage("Deploy") {
                 steps {
                     sh "echo to be done"
-                    /*sh 'ansible-galaxy install -r devops/ansible-deploy/requirements.yml -p devops/ansible-deploy/roles/'
-                    aws {
-                        ansiblePlaybook credentialsId: 'pradeep-cloud-user', 
-                            extras: "-e app_name=margin -e app_branch=$BRANCH_NAME", 
-                            inventory: 'devops/ansible-deploy/inventory/palo-dev', 
-                            playbook: 'devops/ansible-deploy/playbook.yml', 
-                            sudoUser: null
-                    }*/
+
+                    withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
+                        sh "kubectl get nodes"
+                    }
                 }
             }   
         }        
