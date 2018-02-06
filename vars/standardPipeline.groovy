@@ -18,13 +18,6 @@ def call(body) {
                     checkout scm
                 }
             }        
-            stage ('Info') {
-                steps {
-                    sh "java -version"
-                    sh "docker version"
-                    sh "kubectl version"
-                }
-            }
             stage("Compile and Test") {
                 steps {
                     aws {
