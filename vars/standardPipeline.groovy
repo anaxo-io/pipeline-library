@@ -48,7 +48,7 @@ def call(body) {
                     }
                 }
             }
-            stage("Deploy") {
+            stage("Kubernetes Deploy") {
                 steps {
                     useNexus {
                         sh "export DOCKER_IMAGE=`./gradlew -q devops:printDockerImageTag`"
