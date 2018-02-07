@@ -53,12 +53,9 @@ def call(body) {
                     aws {
                         useNexus {
 
-                            sh "echo deploying `./gradlew -q devops:printDockerImageTag`"
-
                             withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
-                                sh "kubectl get nodes"
-                                sh "kubectl -n acuo set image deployment/auth acuo-auth=`./gradlew -q devops:printDockerImageTag`"
-                                sh "kubectl -n acuo rollout status deployment/auth"
+                                sh "kubectl -n ${config.kubernetesNamespace} set image deployment/${config.kubernetesDeployment} ${config.projectName}=`./gradlew -q devops:dockerImageTag`"
+                                sh "kubectl -n ${config.kubernetesNamespace} rollout status deployment/${config.kubernetesDeployment}"
                             }
                         }
                     }
