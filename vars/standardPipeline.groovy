@@ -37,9 +37,9 @@ def call(body) {
                 }
             }
             stage("Push Image") {
-                // when {
-                //     branch "release*"
-                // }
+                when {
+                     branch "release*"
+                }
                 steps {
                     aws {
                         useNexus {
