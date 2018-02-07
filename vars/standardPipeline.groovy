@@ -57,7 +57,7 @@ def call(body) {
 
                             withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
                                 sh "kubectl get nodes"
-                                sh "kubectl set image deployment/auth acuo-auth=`./gradlew -q devops:printDockerImageTag`"
+                                sh "kubectl -n acuo set image deployment/auth acuo-auth=`./gradlew -q devops:printDockerImageTag`"
                                 sh "kubectl rollout status deployment/auth"
                             }
                         }
