@@ -37,9 +37,9 @@ def call(body) {
                 }
             }
             stage("Push Image") {
-                when {
-                     branch "ci-cd-pipeline"
-                }
+                // when {
+                //      branch "ci-cd-pipeline"
+                // }
                 steps {
                     aws {
                         useNexus {
