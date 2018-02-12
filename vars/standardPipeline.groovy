@@ -38,7 +38,7 @@ def call(body) {
             }
             stage("Push Image") {
                 when {
-                     branch "release*"
+                     branch "ci-cd-pipeline"
                 }
                 steps {
                     aws {
