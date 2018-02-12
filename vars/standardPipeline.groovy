@@ -52,10 +52,10 @@ def call(body) {
                 steps {
                     aws {
                         useNexus {
-
                             withKubeConfig(caCertificate: '', credentialsId: 'kubectl', serverUrl: 'https://api.staging.acuo-fs.com') {
-                                sh "kubectl -n ${config.kubernetesNamespace} set image deployment/${config.kubernetesDeployment} ${config.projectName}=`./gradlew -q devops:dockerImageTag`"
-                                sh "kubectl -n ${config.kubernetesNamespace} rollout status deployment/${config.kubernetesDeployment}"
+                                sh "./gradlew kubernetesNodes"
+                                sh "./gradlew kubernetesDeploy"
+                                sh "./gradlew kubernetesDeployStatus"
                             }
                         }
                     }
