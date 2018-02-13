@@ -22,14 +22,6 @@ def call(body) {
             stage ('Create Build Metadata') {
                 steps {
                     createBuildMetadata()
-
-                    script {
-                        if (config.skipCreateDockerfile) {
-                            stage ('skipping create dockerfile') {
-                                sh 'echo "skip_create_dockerfile=true" >> gradle.properties'
-                            }
-                        }
-                    }
                 }
             }
             stage ('Print gradle.properties') {
