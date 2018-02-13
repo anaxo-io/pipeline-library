@@ -22,10 +22,7 @@ def call(body) {
             stage ('Create Build Metadata') {
                 steps {
                     createBuildMetadata()
-                }
-            }
-            stage ('Skip Create Dockerfile') {
-                steps {
+
                     script {
                         if (config.skipCreateDockerfile) {
                             stage ('skipping create dockerfile') {
