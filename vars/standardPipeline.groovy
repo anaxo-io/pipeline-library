@@ -24,6 +24,18 @@ def call(body) {
                     createBuildMetadata
                 }
             }
+            stage ('Skip Create Dockerfile') {
+                steps {
+                    script {
+                        if (config.skipCreateDockerfile) {
+                            stage ('skipping create dockerfile') {
+                                sh 'echo skipCreateDockerfile=true >> gradle.properties'
+                                sh 'cat gradle.properties'
+                            }
+                        }
+                    }
+                }
+            }
             stage("Compile and Test") {
                 steps {
                     aws {
