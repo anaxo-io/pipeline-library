@@ -36,7 +36,9 @@ def call(body) {
                 }
             }
             stage ('Print gradle.properties') {
-                sh 'cat gradle.properties'
+                steps {
+                    sh 'cat gradle.properties'
+                }
             }
             stage("Compile and Test") {
                 steps {
