@@ -29,7 +29,7 @@ def call(body) {
                     script {
                         if (config.skipCreateDockerfile) {
                             stage ('skipping create dockerfile') {
-                                sh 'echo skipCreateDockerfile=true >> gradle.properties'
+                                sh 'echo "skip_create_dockerfile=true" >> gradle.properties'
                             }
                         }
                     }
