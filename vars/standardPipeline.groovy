@@ -30,11 +30,13 @@ def call(body) {
                         if (config.skipCreateDockerfile) {
                             stage ('skipping create dockerfile') {
                                 sh 'echo skipCreateDockerfile=true >> gradle.properties'
-                                sh 'cat gradle.properties'
                             }
                         }
                     }
                 }
+            }
+            stage ('Print gradle.properties') {
+                sh 'cat gradle.properties'
             }
             stage("Compile and Test") {
                 steps {
