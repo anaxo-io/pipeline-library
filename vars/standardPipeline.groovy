@@ -21,7 +21,7 @@ def call(body) {
             }
             stage ('Create Build Metadata') {
                 steps {
-                    createBuildMetadata
+                    createBuildMetadata()
                 }
             }
             stage ('Skip Create Dockerfile') {
