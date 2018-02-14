@@ -15,9 +15,20 @@ def call(body) {
         stages {
             stage ('Checkout') {
                 steps {
+                    deleteDir()
                     checkout scm
                 }
-            }        
+            }
+            stage ('Create Build Metadata') {
+                steps {
+                    createBuildMetadata()
+                }
+            }
+            stage ('Print gradle.properties') {
+                steps {
+                    sh 'cat gradle.properties'
+                }
+            }
             stage("Compile and Test") {
                 steps {
                     aws {
@@ -37,9 +48,6 @@ def call(body) {
                 }
             }
             stage("Push Image") {
-                when {
-                    branch "release*"
-                }
                 steps {
                     aws {
                         useNexus {
@@ -48,17 +56,40 @@ def call(body) {
                     }
                 }
             }
-            stage("Deploy") {
+            stage("Kubernetes Deploy 'acuo'") {
+                when {
+                    expression {
+                        return env.BRANCH_NAME == "develop"
+                    }
+                }
                 steps {
-                    sh "echo to be done"
-                    /*sh 'ansible-galaxy install -r devops/ansible-deploy/requirements.yml -p devops/ansible-deploy/roles/'
                     aws {
-                        ansiblePlaybook credentialsId: 'pradeep-cloud-user', 
-                            extras: "-e app_name=margin -e app_branch=$BRANCH_NAME", 
-                            inventory: 'devops/ansible-deploy/inventory/palo-dev', 
-                            playbook: 'devops/ansible-deploy/playbook.yml', 
-                            sudoUser: null
-                    }*/
+                        useNexus {
+                            withEnv(['K8_NAMESPACE=acuo']) {
+                                useKubeConfig {
+                                    kubeDeploy()
+                                }
+                            }
+                        }
+                    }
+                }
+            }   
+            stage("Kubernetes Deploy 'qa'") {
+                when {
+                    expression {
+                        return env.BRANCH_NAME == "develop"
+                    }
+                }
+                steps {
+                    aws {
+                        useNexus {
+                            withEnv(['K8_NAMESPACE=qa']) {
+                                useKubeConfig {
+                                    kubeDeploy()
+                                }
+                            }
+                        }
+                    }
                 }
             }   
         }        
