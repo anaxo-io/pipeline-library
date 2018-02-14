@@ -56,7 +56,7 @@ def call(body) {
                     }
                 }
             }
-            stage("Kubernetes Deploy") {
+            stage("Kubernetes Deploy 'acuo'") {
                 when {
                     expression {
                         return env.BRANCH_NAME == "develop"
@@ -65,12 +65,28 @@ def call(body) {
                 steps {
                     aws {
                         useNexus {
-                            useKubeConfig {
-                                sh "./gradlew kubernetesNodes"
-                                sh "./gradlew kubernetesGetDeployment"
-                                sh "./gradlew kubernetesDeploy"
-                                sh "./gradlew kubernetesDeployStatus"
-                                sh "./gradlew kubernetesGetDeployment"
+                            withEnv(['K8_NAMESPACE=acuo']) {
+                                useKubeConfig {
+                                    kubeDeploy()
+                                }
+                            }
+                        }
+                    }
+                }
+            }   
+            stage("Kubernetes Deploy 'qa'") {
+                when {
+                    expression {
+                        return env.BRANCH_NAME == "develop"
+                    }
+                }
+                steps {
+                    aws {
+                        useNexus {
+                            withEnv(['K8_NAMESPACE=qa']) {
+                                useKubeConfig {
+                                    kubeDeploy()
+                                }
                             }
                         }
                     }
