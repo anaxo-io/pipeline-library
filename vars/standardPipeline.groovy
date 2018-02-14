@@ -48,9 +48,6 @@ def call(body) {
                 }
             }
             stage("Push Image") {
-                // when {
-                //      branch "ci-cd-pipeline"
-                // }
                 steps {
                     aws {
                         useNexus {
@@ -60,6 +57,11 @@ def call(body) {
                 }
             }
             stage("Kubernetes Deploy") {
+                when {
+                    expression {
+                        return env.BRANCH_NAME == "develop"
+                    }
+                }
                 steps {
                     aws {
                         useNexus {
