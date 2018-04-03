@@ -5,9 +5,9 @@ def call(Closure body) {
     [$class: 'StringBinding', credentialsId: 'acuo_secret_key', variable: 'acuo_security_key']
   ]) {
     withEnv([
-      'ORG_GRADLE_PROJECT_nexusUrl=https://nexus.acuo.com',
-      'acuo_security_key=$acuo_security_key'
+      'ORG_GRADLE_PROJECT_nexusUrl=https://nexus.acuo.com'
     ]) {
+      sh 'export acuo_security_key=$acuo_security_key'
       body()
     }
   }
