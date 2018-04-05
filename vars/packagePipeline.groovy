@@ -33,10 +33,11 @@ def call(body) {
                     def PB = build job: 'PostBuild', propagate: false
                     result = PB.result
                     if (result.equals("SUCCESS")){
+                        echo "success"
+                        }
                         else {
                             sh "exit 1" // this fails the stage
                         }
-                    }
                 }
             }
             stage("trace") {
