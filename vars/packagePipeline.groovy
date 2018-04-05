@@ -46,10 +46,11 @@ def call(body) {
                     def TB = build job: 'trace', propagate: false
                     result = TB.result
                     if (result.equals("SUCCESS")) {
+                        echo "success"
+                    }
                         else {
                             sh "exit 2"
                         }
-                    }
                 }
             }
             stage("persist") {
@@ -58,10 +59,11 @@ def call(body) {
                     def PT = build job: 'persist', quietPeriod: 30
                     result = PT.result
                     if (result.equals("SUCCESS")) {
+                        echo "success"
+                    }
                         else {
                             sh "exit 3"
                         }
-                    }
                 }
             }
             stage("all") {
