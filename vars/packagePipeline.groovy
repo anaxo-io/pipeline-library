@@ -68,18 +68,25 @@ def call(body) {
             }
             stage("all") {
                 steps{
-                    when {
-                        expression { projectName = "all" }
                         parallel (
-                            build job: '/acuo-auth/develop', quietPeriod: 30
-                            build job: '/acuo-agrement/develop', quietPeriod: 30
-                            build job: '/acuo-margin/develop', quietPeriod: 30
-                            build job: '/acuo-valuation/develop', quietPeriod: 30
-                            build job: '/acuo-collateral/develop',quietPeriod: 30
+                            a: {
+                                build job: '/acuo-auth/develop', quietPeriod: 30
+                                },
+                            b: {
+                                build job: '/acuo-agrement/develop', quietPeriod: 30
+                                },
+                            c: {
+                                build job: '/acuo-margin/develop', quietPeriod: 30
+                                },
+                            d: {
+                                build job: '/acuo-valuation/develop', quietPeriod: 30
+                                },
+                            e: {
+                                build job: '/acuo-collateral/develop',quietPeriod: 30
+                            }
                             )
                     }
-                }
-            }           
+                }       
         }        
     }
 }
