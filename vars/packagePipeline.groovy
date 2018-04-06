@@ -30,7 +30,7 @@ def PB = 'UNKNOW'
             stage("PostBuild") {
                 steps {
                     build job: '/acuo-common/develop', quietPeriod: 30
-                    PB = build job: 'PostBuild', propagate: false
+                    PB = sh (build job: 'PostBuild', propagate: false)
                     result = ${PB}.result
                     if (result.equals("SUCCESS")){
                         echo "success"
