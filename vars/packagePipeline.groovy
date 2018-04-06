@@ -4,7 +4,7 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
-    
+def PB = 'UNKNOW'    
     pipeline {
 
         agent { label 'ubuntu_agent' }
@@ -30,8 +30,8 @@ def call(body) {
             stage("PostBuild") {
                 steps {
                     build job: '/acuo-common/develop', quietPeriod: 30
-                    def PB = build job: 'PostBuild', propagate: false
-                    result = PB.result()
+                    PB = build job: 'PostBuild', propagate: false
+                    result = ${PB}.result
                     if (result.equals("SUCCESS")){
                         echo "success"
                         }
@@ -45,7 +45,7 @@ def call(body) {
                     node {
                     build job: '/acuo-trace/develop', quietPeriod: 30
                     def TB = build job: 'trace', propagate: false
-                    result = TB.result()
+                    result = TB.result
                     if (result.equals("SUCCESS")) {
                         echo "success"
                     }
@@ -60,7 +60,7 @@ def call(body) {
                     node {
                     build job: '/acuo-persist/develop', quietPeriod: 30
                     def PT = build job: 'persist', quietPeriod: 30
-                    result = PT.result()
+                    result = PT.result
                     if (result.equals("SUCCESS")) {
                         echo "success"
                     }
