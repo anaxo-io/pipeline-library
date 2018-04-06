@@ -29,25 +29,23 @@ def call(body) {
             }
             stage("PostBuild") {
                 steps {
-                    node {
                     build job: '/acuo-common/develop', quietPeriod: 30
                     def PB = build job: 'PostBuild', propagate: false
-                    result = PB.result
+                    result = PB.result()
                     if (result.equals("SUCCESS")){
                         echo "success"
                         }
                         else {
                             sh "exit 1" // this fails the stage
                         }
-                    }
-                }
+                    }   
             }
             stage("trace") {
                 steps {
                     node {
                     build job: '/acuo-trace/develop', quietPeriod: 30
                     def TB = build job: 'trace', propagate: false
-                    result = TB.result
+                    result = TB.result()
                     if (result.equals("SUCCESS")) {
                         echo "success"
                     }
@@ -62,7 +60,7 @@ def call(body) {
                     node {
                     build job: '/acuo-persist/develop', quietPeriod: 30
                     def PT = build job: 'persist', quietPeriod: 30
-                    result = PT.result
+                    result = PT.result()
                     if (result.equals("SUCCESS")) {
                         echo "success"
                     }
