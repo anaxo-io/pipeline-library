@@ -56,7 +56,7 @@ def call(body) {
                     }
                 }
             }
-            stage("Kubernetes Deploy 'acuo'") {
+            /*stage("Kubernetes Deploy 'acuo'") {
                 when {
                     expression {
                         return env.BRANCH_NAME == "develop"
@@ -73,7 +73,7 @@ def call(body) {
                         }
                     }
                 }
-            }   
+            }*/ 
             stage("Kubernetes Deploy 'qa'") {
                 when {
                     expression {
