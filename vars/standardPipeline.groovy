@@ -75,6 +75,8 @@ def call(body) {
                         }
                     }
                 }*/ 
+                stage('Kubernetes Deploy') {
+                parallel {
                 stage("Kubernetes Deploy 'qa'") {
                     when {
                         expression {
@@ -110,7 +112,9 @@ def call(body) {
                             }
                         }
                     }
-                } 
+                  } 
+                }
+              }
             } 
                         
             post {
