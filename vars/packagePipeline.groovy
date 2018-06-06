@@ -28,8 +28,7 @@ def call(body) {
                           steps {
                            sh 'cat gradle.properties'
                             }
-                        }
-                }        
+                        }     
                 stage("Build") {
                     steps {
                         aws {
