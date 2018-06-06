@@ -75,24 +75,6 @@ def call(body) {
                         }
                     }
                 }*/ 
-                stage("Kubernetes Deploy 'uat'") {
-                    when {
-                        expression {
-                            return env.BRANCH_NAME == "develop"
-                        }
-                    }
-                    steps {
-                        aws {
-                            useNexus {
-                                withEnv(['K8_NAMESPACE=uat']) {
-                                    useKubeConfig {
-                                        kubeDeploy()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } 
                 stage("Kubernetes Deploy 'qa'") {
                     when {
                         expression {
@@ -111,6 +93,24 @@ def call(body) {
                         }
                     }
                 }   
+                stage("Kubernetes Deploy 'uat'") {
+                    when {
+                        expression {
+                            return env.BRANCH_NAME == "develop"
+                        }
+                    }
+                    steps {
+                        aws {
+                            useNexus {
+                                withEnv(['K8_NAMESPACE=uat']) {
+                                    useKubeConfig {
+                                        kubeDeploy()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } 
             } 
                         
             post {
