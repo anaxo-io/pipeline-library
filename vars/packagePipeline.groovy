@@ -18,6 +18,17 @@ def call(body) {
                     steps {
                         checkout scm
                     }
+                }
+                 stage ('Create Build Metadata') {
+                        steps {
+                         createBuildMetadata()
+                          }
+                     }
+                  stage ('Print gradle.properties') {
+                          steps {
+                           sh 'cat gradle.properties'
+                            }
+                        }
                 }        
                 stage("Build") {
                     steps {
