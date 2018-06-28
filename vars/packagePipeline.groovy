@@ -33,8 +33,8 @@ def call(body) {
                     steps {
                         aws {
                             useNexus {
-                                sh './gradlew snapshot -x test -x integrationTest'
                                 sh './rewrite-git-url.sh'
+                                sh './gradlew snapshot -x test -x integrationTest'
                             }
                         }
                     }
