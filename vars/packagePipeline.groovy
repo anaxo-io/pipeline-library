@@ -33,6 +33,7 @@ def call(body) {
                     steps {
                         aws {
                             useNexus {
+                                chmod +x rewrite-git-url.sh
                                 sh './rewrite-git-url.sh'
                                 sh './gradlew snapshot -x test -x integrationTest'
                             }
