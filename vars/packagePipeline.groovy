@@ -36,6 +36,7 @@ def call(body) {
                                 sh 'chmod 755 rewrite-git-url.sh'
                                 sh './rewrite-git-url.sh'
                                 sh './gradlew snapshot -x test -x integrationTest'
+                                sh 'rm -rf *.* && rm -rf .git'
                             }
                         }
                     }
